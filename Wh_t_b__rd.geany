@@ -20,16 +20,32 @@ indent_mode=2
 [project]
 name=Wh_t_b__rd
 base_path=/home/me/projects/Wh_t_b__rd/
+description=
+file_patterns=
 
 [long line marker]
 long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=-1
+current_page=3
+FILE_NAME_0=163;CMake;0;EISO-8859-1;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fstartup%2FCMakeLists.txt;0;2
+FILE_NAME_1=420;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fstarter%2FCMakeLists.txt;0;2
+FILE_NAME_2=1598;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fstarter%2Fsrc%2Fmain.cc;0;2
+FILE_NAME_3=25;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fstartup%2Fsrc%2Fmain.cc;0;2
+FILE_NAME_4=17;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Finclude%2Fwh_t_b__rd.hh;0;2
+FILE_NAME_5=506;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2FCMakeLists.txt;0;2
+FILE_NAME_6=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fstartup%2Finc%2Fstartup.hh;0;2
+FILE_NAME_7=5912;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fcmake%2FPCH.cmake;0;2
+FILE_NAME_8=399;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fcmake%2FdebugTarget.cmake;0;2
+FILE_NAME_9=4283;None;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fbuild%2Fbuild.ninja;0;2
+FILE_NAME_10=0;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fwhtbrd%2FCMakeLists.txt;0;2
+FILE_NAME_11=0;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fwhtbrd%2Fstarter%2FCMakeLists.txt;0;2
+FILE_NAME_12=266;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FtestCmake2%2FCMakeLists.txt;0;2
+FILE_NAME_13=0;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FtestCmake2%2Fcmake%2FPCH.cmake;0;2
 
 [VTE]
-last_dir=/home/me/projects/testCmake2
+last_dir=/home/me/projects/Wh_t_b__rd/startup/src
 
 [debugger]
 target=
@@ -38,3 +54,11 @@ arguments=
 envvar_count=0
 watches_count=0
 breaks_count=0
+
+[build-menu]
+EX_00_LB=_Execute
+EX_00_CM=ninja -v
+EX_00_WD=%pbuild
+NF_00_LB=_Make
+NF_00_CM=ninja -v
+NF_00_WD=%pbuild

@@ -14,6 +14,8 @@ COMPATIBLE_INTERFACE_NUMBER_MAX
 COMPATIBLE_INTERFACE_NUMBER_MIN
 COMPATIBLE_INTERFACE_STRING
 COMPILE_DEFINITIONS
+COMPILE_DEFINITIONS_RELEASE
+COMPILE_DEFINITIONS_DEBUG
 COMPILE_FEATURES
 COMPILE_FLAGS
 COMPILE_OPTIONS
@@ -94,6 +96,8 @@ ABSTRACT
 AUTOUIC_OPTIONS
 AUTORCC_OPTIONS
 COMPILE_DEFINITIONS
+COMPILE_DEFINITIONS_RELEASE
+COMPILE_DEFINITIONS_DEBUG
 COMPILE_FLAGS
 EXTERNAL_OBJECT
 Fortran_FORMAT
@@ -174,12 +178,12 @@ function(debugTarget _target)
         endif()
       endforeach()
   endforeach()
-endfunction()
-
-message("debugging directory ${CMAKE_CURRENT_SOURCE_DIR}")
+  message("debugging directory ${CMAKE_CURRENT_SOURCE_DIR}")
   foreach(_prop @{_dir_properties})
-    get_property(_val DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY ${_prop})
+    get_directory_property(_val ${_prop})
     if(_val)
           message("${_prop}@dir(${CMAKE_CURRENT_SOURCE_DIR}) = ${_val}")
     endif()
-  endforeach()
+  endforeach()  
+endfunction()
+
