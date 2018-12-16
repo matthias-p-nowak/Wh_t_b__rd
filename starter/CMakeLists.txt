@@ -4,6 +4,8 @@ message(STATUS "--- starter ----")
 
 include_directories(include)
 
+add_compile_options( -shared -rdynamic)
+
 add_executable(starter src/main.cc)
 set_target_properties(starter PROPERTIES VERSION 0.1)
 target_link_libraries(starter dl)

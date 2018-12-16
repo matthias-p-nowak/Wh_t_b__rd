@@ -6,6 +6,10 @@
 
 Whtbrd_global _whtbrd_global;
 
+void Whtbrd_global::doHello(){
+  printf("got a hello via Whtbrd_global\n");
+}
+
 // ***********************************************
 /*
  * we catch an exit call and return to our main function
@@ -31,7 +35,8 @@ void bigStuff() {
   // start the splash screen
   dlerror();
   // void *lib=dlopen("/home/me/projects/whtbrd/build/starter/libtestLib.so", RTLD_LAZY);
-  void *lib=dlopen("libtestLib.so", RTLD_NOW|RTLD_GLOBAL);
+  // void *lib=dlopen("libtestLib.so", RTLD_NOW|RTLD_GLOBAL);
+  void *lib=dlopen("libtestLib.so", RTLD_LAZY);
   if(lib==NULL){
     fprintf(stderr,"it failed: %s\n",dlerror());
     return;

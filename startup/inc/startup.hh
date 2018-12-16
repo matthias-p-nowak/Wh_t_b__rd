@@ -1,2 +1,4 @@
+#ifndef WHTBRD_STARTUP_H
+#define WHTBRD_STARTUP_H
 
-#include <wh_t_b__rd.hh>
+#endif

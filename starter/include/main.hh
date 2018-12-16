@@ -11,14 +11,15 @@
 
 // #include "whrtbrd.hh"
 
+extern "C" {
  
 class Whtbrd_global {
 public:
   int verbose=0;
+  void doHello();
 };
 
-extern "C"{
+
 extern Whtbrd_global _whtbrd_global;
 }
-
 #endif
