@@ -1,5 +1,6 @@
-#ifndef WHTBRD_INCLUDE
-#define WHTBRD_INCLUDE
+#ifndef INCLUDED201812176
+#define INCLUDED201812176
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
