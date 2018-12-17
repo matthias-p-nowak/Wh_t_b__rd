@@ -10,5 +10,5 @@ int WHTBRD_init(struct WHTBRG_settings *_settings){
 }
 
 void WHTBRD_startup(){
-  fromHere("startup called\n");
+  fromHere("startup called");
 }

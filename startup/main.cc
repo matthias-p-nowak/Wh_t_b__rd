@@ -138,6 +138,11 @@ int main(int argc, char *argv[]) {
         printf("loading %s\n",p.c_str());
       void *pluginLib=dlopen(p.c_str(), RTLD_LAZY);
       if(pluginLib==NULL){
+        dlerror();
+        string p2="lib"+p+".so";
+        pluginLib=dlopen(p2.c_str(), RTLD_LAZY);        
+      }
+      if(pluginLib==NULL){
         fprintf(stderr,"couldn't open pluginLib %s due to %s\n",p.c_str(),dlerror());
         continue;
       }
