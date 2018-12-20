@@ -11,6 +11,7 @@
 #include <fstream>
 #include <cstring>
 #include <dlfcn.h>
+#include <stdarg.h>
 
 /*
 #include <fcntl.h>

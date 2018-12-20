@@ -7,6 +7,8 @@
 
 struct WHTBRG_settings{
   int verbose=0;
+  int (*general)(const char *name,...);
+  void (*restart)();
 };
 
 // int WHTBRD_init(struct WHTBRG_settings *settings);

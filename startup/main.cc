@@ -16,9 +16,33 @@ void print_usage() {
   exit(EXIT_SUCCESS);
 }
 
+int general(const char *name, ...) {
+  char *msg;
+  va_list ap;
+  va_start(ap,name);
+  if(!strcmp(name,"ok"))
+    msg=va_arg(ap,char *);
+  printf("ok: %s\n",msg);
+  va_end(ap);
+  return 0;
+}
+
+char **cmdLine=NULL;
+
+void doRestart(){
+  execvp(cmdLine[0],cmdLine);
+}
+
 int main(int argc, char *argv[]) {
+  char *argv2[argc+1];
+  for(int i=0; i<argc; ++i)
+    argv2[i]=argv[i];
+  argv2[argc]=NULL;
+  cmdLine=argv2;
   void(*startupFunction)();
   startupFunction=NULL;
+  whtbrg_settings.general=general;
+  whtbrg_settings.restart=doRestart;
   {
     fromHere("getting options and settings");
     // a new scope for the variables used for starting up
@@ -122,27 +146,23 @@ int main(int argc, char *argv[]) {
         fprintf(stderr,"restart didn't fixed LD_LIBRARY_PATH -> %s",env_LD_paths);
         exit(EXIT_FAILURE);
       }
-      char *argv2[argc+1];
-      for(int i=0; i<argc; ++i)
-        argv2[i]=argv[i];
-      argv2[argc]=NULL;
       execvp(argv[0],argv2);
       fprintf(stderr,"missed execvp 2018-12-07/1\n");
       exit(EXIT_FAILURE);
     } else {
       // no further plugins directories to add
     }
-    for(string p: plugins){
+    for(string p: plugins) {
       dlerror();
       if(whtbrg_settings.verbose>1)
         printf("loading %s\n",p.c_str());
       void *pluginLib=dlopen(p.c_str(), RTLD_LAZY);
-      if(pluginLib==NULL){
+      if(pluginLib==NULL) {
         dlerror();
         string p2="lib"+p+".so";
-        pluginLib=dlopen(p2.c_str(), RTLD_LAZY);        
+        pluginLib=dlopen(p2.c_str(), RTLD_LAZY);
       }
-      if(pluginLib==NULL){
+      if(pluginLib==NULL) {
         fprintf(stderr,"couldn't open pluginLib %s due to %s\n",p.c_str(),dlerror());
         continue;
       }
@@ -150,14 +170,14 @@ int main(int argc, char *argv[]) {
       init=(WHTBRD_init_fct)dlsym(pluginLib,"WHTBRD_init");
       if(init)
         init(&whtbrg_settings);
-      if(!startupFunction){
+      if(!startupFunction) {
         startupFunction=(void (*)()) dlsym(pluginLib,"WHTBRD_startup");
       }
     }
   }
   fromHere("settings read");
   //
-  if(startupFunction){
+  if(startupFunction) {
     if(whtbrg_settings.verbose>1)
       printf("calling the found WHTBRD_startup function\n");
     startupFunction();

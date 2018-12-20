@@ -134,11 +134,11 @@ function(add_precompiled_header _target _input)
     #in case they show up
     
     string(TOUPPER ${CMAKE_BUILD_TYPE} _bt)
-    
-    set(_compile_features $<TARGET_PROPERTY:${_target},COMPILE_FEATURES>)
-    list(APPEND _compile $<$<BOOL:${_compile_features}>:-XCF$<JOIN:${_compile_features},\t-X>>)    
+    #TODO: don't know what to do with compile features
+    #set(_compile_features $<TARGET_PROPERTY:${_target},COMPILE_FEATURES>)
+    #list(APPEND _compile $<$<BOOL:${_compile_features}>:-D$<JOIN:${_compile_features},\t-D>>)    
     set(_compile_flags $<TARGET_PROPERTY:${_target},COMPILE_FLAGS>)
-    list(APPEND _compile $<$<BOOL:${_compile_flags}>:-XCF$<JOIN:${_compile_flags},\t-X>>)    
+    list(APPEND _compile $<$<BOOL:${_compile_flags}>:-XCFL$<JOIN:${_compile_flags},\t-XCFL>>)    
 
     list(APPEND _compile $<JOIN:$<TARGET_PROPERTY:${_target},COMPILE_OPTIONS>,\t>)
 

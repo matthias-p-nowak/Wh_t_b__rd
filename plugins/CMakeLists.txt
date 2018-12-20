@@ -1,5 +1,10 @@
 message("--- plugins ---")
 
-# first one must be base
+find_package(Qt5Core REQUIRED)
+if(Qt5Core_found)
+  message("Qt5 core found")
+else()
+  message("Qt5Core_found not defined")
+endif()
 add_subdirectory(plug1)
 add_subdirectory(base)
