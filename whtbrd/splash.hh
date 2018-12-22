@@ -1,16 +1,20 @@
 #ifndef INCLUDED_201812221
 #define INCLUDED_201812221
 
-// #include <startup.hh> // only needed when generating moc files
+#include <startup.hh> // only needed when generating moc files
 
-class Whtbrd_Splash{
+class Whtbrd_Splash: public QSplashScreen{
 private:
-  QSplashScreen splash;
-  QString _msg;
-public:
   Whtbrd_Splash();
-  // virtual ~Whtbrd_Splash();
-  void showMessage(const QString &msg);
+  ~Whtbrd_Splash();
+  static Whtbrd_Splash *instance;
+  QString _msg;
+  int idle=0;
+  void _addMsg(const QString &msg);
+  void timerEvent(QTimerEvent *event);
+public:
+  static void init();
+  static void addMsg(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 };
 
 #endif

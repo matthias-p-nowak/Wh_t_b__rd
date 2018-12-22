@@ -6,5 +6,10 @@ if(Qt5Core_FOUND)
 else()
   message("Qt5Core_found not defined")
 endif()
+
+add_subdirectory(common)
+add_subdirectory(workbench)
+
 add_subdirectory(plug1)
 add_subdirectory(base)
+

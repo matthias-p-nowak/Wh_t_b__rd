@@ -61,6 +61,14 @@ message(STATUS "cmake function add_precompiled_header included")
 #
 function(add_precompiled_header _target _input)
   #message("got request for precompiled ${_input} for ${_target} lang ${lang}")
+  cmake_parse_arguments(_PCH "" "" "HDRS" ${ARGN})
+  if(_PCH_HDRS)
+    #message("additional headers are ${_PCH_HDRS}")
+    set(_pch_headers)
+    foreach(_ah ${_PCH_HDRS})
+      list(APPEND _pch_headers "${CMAKE_CURRENT_SOURCE_DIR}/${_ah}")
+    endforeach()
+  endif()
   if(CMAKE_COMPILER_IS_GNUCXX)
     # for the moment ignore all other compilers
     if(COMMAND debugTarget)
@@ -156,7 +164,7 @@ function(add_precompiled_header _target _input)
     add_custom_command(
       OUTPUT "${_pchfile}"
       COMMAND ${_compile}   #it automatically expands the list to arguments
-      DEPENDS "${_pch_header}"
+      DEPENDS ${_pch_header} ${_pch_headers}
       COMMENT "Precompiling ${_name} for ${_target} (C++)")
     
     # not necessary, but good for developing

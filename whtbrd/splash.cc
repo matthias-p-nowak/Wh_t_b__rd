@@ -1,31 +1,59 @@
 #include <startup.hh>
 
-Whtbrd_Splash *_splash=NULL;
-
-void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-  _splash->showMessage(msg);
-}
-
 Whtbrd_Splash::Whtbrd_Splash()
 {
-  _splash=this;
+  fromHere("splashing");
   QPixmap pixmap(":/splash2.png");
-  splash.setPixmap(pixmap);
-  splash.setMask(pixmap.mask());
-  splash.show();
-  qInstallMessageHandler(myMessageOutput);
-  qDebug()<<"debug output redirected";
-  // qDebug()<< "should work by now";
+  setPixmap(pixmap);
+  setMask(pixmap.mask());
+  show();
+  // qInstallMessageHandler(myMessageOutput);
+  qInstallMessageHandler(addMsg);
+  startTimer(500);
 }
-// hardcoded number of lines
-void Whtbrd_Splash::showMessage(const QString &msg) {
+
+Whtbrd_Splash::~Whtbrd_Splash() {
+  fromHere("deleting splash");
+  qInstallMessageHandler(NULL); // reset to default
+  instance=NULL;
+}
+
+void Whtbrd_Splash::init() {
+  fromHere("initializing splash");
+  if(instance==NULL) {
+    instance=new Whtbrd_Splash();
+  }
+  qDebug()<< "splash initialized";
+}
+
+Whtbrd_Splash * Whtbrd_Splash::instance=NULL;
+
+void Whtbrd_Splash::addMsg(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+  instance->_addMsg(msg);
+}
+void Whtbrd_Splash::_addMsg(const QString &msg)
+{
+  idle=0;
   while(_msg.count("\n")>=25) {
     _msg.remove(0,_msg.indexOf("\n")+1);
   }
   _msg+=msg+"\n";
-  splash.showMessage(_msg,Qt::AlignLeft|Qt::AlignBottom,Qt::darkGreen);
-  splash.show();
+  showMessage(_msg,Qt::AlignLeft|Qt::AlignBottom,Qt::darkGreen);
+  show();
+}
+
+void Whtbrd_Splash::timerEvent(QTimerEvent *event) {
+  if(++idle>10) {
+    if(isVisible()) {
+      fromHere("hiding");
+      hide();
+    }
+    if(idle>30) {
+      fromHere("closing");
+      deleteLater();
+    }
+  }
 }
 
 

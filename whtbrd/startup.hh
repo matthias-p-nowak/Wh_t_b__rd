@@ -18,7 +18,9 @@
 #include <QBuffer>
 #include <QFileInfo>
 
-#include <whtbrd_startup.hh>
+// #include <whtbrd_startup.hh>
+#include <whtbrd_common.hh>
+
 #include <splash.hh>
 
 #endif //

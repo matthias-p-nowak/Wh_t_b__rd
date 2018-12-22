@@ -40,8 +40,10 @@ void print_timing(const char *file, int line) {
 int main(int argc, char *argv[]) {
   TIMING
   QApplication whtbrd_App(argc, argv);
-  new Whtbrd_Splash();
   TIMING
+  Whtbrd_Splash::init();
+  TIMING
+  whtbrd_App.setQuitOnLastWindowClosed(true);
   int opt;
   QStringList reqPluginDirs;
   QStringList reqPlugins;
@@ -106,9 +108,10 @@ int main(int argc, char *argv[]) {
       }
     }
   }
-  
-  for(int i=0; i<30; ++i) {
-    QThread::sleep(1);
-    whtbrd_App.processEvents();
-  }
+
+  fromHere("starting to run application");
+  whtbrd_App.setQuitOnLastWindowClosed(true);
+  whtbrd_App.exec();
+  fromHere("about to exit main");
+  TIMING
 }

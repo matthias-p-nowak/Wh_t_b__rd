@@ -1,7 +1,7 @@
 # ----- startup -----
 message(" the old startup project")
 
-message("ok ${WHTBRD_VERSION}")
+# message("ok ${WHTBRD_VERSION}")
 
 add_compile_options( -Wall)
 
