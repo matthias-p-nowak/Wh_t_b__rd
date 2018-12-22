@@ -15,7 +15,8 @@ Whtbrd_Splash::Whtbrd_Splash()
   splash.setMask(pixmap.mask());
   splash.show();
   qInstallMessageHandler(myMessageOutput);
-  qDebug()<< "should work by now";
+  qDebug()<<"debug output redirected";
+  // qDebug()<< "should work by now";
 }
 // hardcoded number of lines
 void Whtbrd_Splash::showMessage(const QString &msg) {
@@ -25,7 +26,6 @@ void Whtbrd_Splash::showMessage(const QString &msg) {
   _msg+=msg+"\n";
   splash.showMessage(_msg,Qt::AlignLeft|Qt::AlignBottom,Qt::darkGreen);
   splash.show();
-  qApp->processEvents();
 }
 
 

@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QDebugStateSaver>
 #include <QBuffer>
+#include <QFileInfo>
 
 #include <whtbrd_startup.hh>
 #include <splash.hh>

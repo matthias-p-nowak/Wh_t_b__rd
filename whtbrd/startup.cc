@@ -1,7 +1,7 @@
 #include <startup.hh>
 
-char **cmdLine=NULL;
-struct WHTBRG_settings whtbrg_settings;
+// char **cmdLine=NULL;
+// struct WHTBRG_settings whtbrg_settings;
 
 using namespace std;
 
@@ -24,12 +24,9 @@ void print_timing(const char *file, int line) {
     perror("rusage");
   }
   else {
-    auto _dbg=qDebug();
-    QDebugStateSaver _dss(_dbg);
     struct timeval *t=&usage.ru_utime;
     double spent=t->tv_sec+ 1.0*t->tv_usec/1000000;
     printf("%s:%d:time spent %f, sofar %f\n",file,line,spent-sofar,spent);
-    _dbg.nospace()<<file<<":"<<line<<":time spent "<< spent-sofar<<", sofar "<<spent;
     sofar=spent;
   }
 }
@@ -45,14 +42,6 @@ int main(int argc, char *argv[]) {
   QApplication whtbrd_App(argc, argv);
   new Whtbrd_Splash();
   TIMING
-  qDebug()<<"hello in splash?";
-  whtbrd_App.processEvents();
-  char *argv2[argc+1];
-  for(int i=0; i<argc; ++i)
-    argv2[i]=argv[i];
-  argv2[argc]=NULL;
-  cmdLine=argv2;
-  TIMING
   int opt;
   QStringList reqPluginDirs;
   QStringList reqPlugins;
@@ -61,7 +50,9 @@ int main(int argc, char *argv[]) {
     case 'L':
     {
       QString newDir(optarg);
-      reqPluginDirs.append(newDir);
+      QFileInfo fi(newDir);
+      fi.makeAbsolute();
+      reqPluginDirs.append(fi.filePath());
       break;
     }
     case 'p':
@@ -70,18 +61,17 @@ int main(int argc, char *argv[]) {
       reqPlugins.append(plugin);
       break;
     }
-    case 'v':
-      ++whtbrg_settings.verbose;
+    case 'v':{
+      int v=qDebug().verbosity()+1;
+      qDebug().setVerbosity(v);
       break;
+    }
     default:
       print_usage();
     }
   } // getopts
   TIMING
   QSettings setting("Wh_t_b__rd","whtbrd");
-  //QString msg="getting "+setting.value("hello").toString();
-  //showMessage(msg);
-  //setting.setValue("hello","World");
   QVariant var;
   const char _plugins[]="plugins";
   var=setting.value(_plugins);
@@ -107,10 +97,18 @@ int main(int argc, char *argv[]) {
   }
   setting.sync();
   TIMING
-  for(int i=0; i<10; ++i) {
+  if(!reqPluginDirs.empty()){
+    auto paths=whtbrd_App.libraryPaths();
+    for(QString path: reqPluginDirs){
+      if(!paths.contains(path)){
+        qDebug()<<"adding path "<<path;
+        whtbrd_App.addLibraryPath(path);
+      }
+    }
+  }
+  
+  for(int i=0; i<30; ++i) {
     QThread::sleep(1);
     whtbrd_App.processEvents();
   }
-  qDebug()<< "next";
-  QThread::sleep(3);
 }

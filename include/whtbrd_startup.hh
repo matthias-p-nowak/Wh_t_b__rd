@@ -3,8 +3,6 @@
 
 #define fromHere(msg) printf("%s:%d: %s\n",__FILE__,__LINE__,msg)
 
-
-
 struct WHTBRG_settings{
   int verbose=0;
   int (*general)(const char *name,...);

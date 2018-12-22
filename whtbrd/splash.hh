@@ -1,7 +1,7 @@
 #ifndef INCLUDED_201812221
 #define INCLUDED_201812221
 
-#include <startup.hh>
+// #include <startup.hh> // only needed when generating moc files
 
 class Whtbrd_Splash{
 private:
