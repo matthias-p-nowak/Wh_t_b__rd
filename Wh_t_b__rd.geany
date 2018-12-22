@@ -28,15 +28,12 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=4
-FILE_NAME_0=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fstartup%2Fmain.cc;0;2
-FILE_NAME_1=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fbase%2Fbase.cc;0;2
-FILE_NAME_2=0;Markdown;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2FREADME.md;0;2
-FILE_NAME_3=0;None;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2FLICENSE;0;2
-FILE_NAME_4=0;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2FCMakeLists.txt;0;2
+current_page=1
+FILE_NAME_0=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fwhtbrd%2Fstartup.cc;0;2
+FILE_NAME_1=0;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fwhtbrd%2FCMakeLists.txt;0;2
 
 [VTE]
-last_dir=/home/me/projects/Wh_t_b__rd
+last_dir=/home/me/projects/Wh_t_b__rd/whtbrd
 
 [build-menu]
 EX_00_LB=_Execute
