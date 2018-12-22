@@ -9,7 +9,9 @@ Whtbrd_Splash::Whtbrd_Splash()
   show();
   // qInstallMessageHandler(myMessageOutput);
   qInstallMessageHandler(addMsg);
-  startTimer(500);
+  setAttribute(Qt::WA_DeleteOnClose,true);
+  setAttribute(Qt::WA_QuitOnClose,true);
+  idleTimer=startTimer(500);
 }
 
 Whtbrd_Splash::~Whtbrd_Splash() {
@@ -51,7 +53,10 @@ void Whtbrd_Splash::timerEvent(QTimerEvent *event) {
     }
     if(idle>30) {
       fromHere("closing");
-      deleteLater();
+      close();
+      //killTimer(idleTimer);
+      //auto tlw=QApplication::topLevelWidgets();
+      //qDebug()<< "have " << tlw.size() << "widgets  ";
     }
   }
 }

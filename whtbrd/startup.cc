@@ -43,7 +43,6 @@ int main(int argc, char *argv[]) {
   TIMING
   Whtbrd_Splash::init();
   TIMING
-  whtbrd_App.setQuitOnLastWindowClosed(true);
   int opt;
   QStringList reqPluginDirs;
   QStringList reqPlugins;
