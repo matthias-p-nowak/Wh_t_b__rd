@@ -12,6 +12,7 @@ Whtbrd_Splash::Whtbrd_Splash()
   setAttribute(Qt::WA_DeleteOnClose,true);
   setAttribute(Qt::WA_QuitOnClose,true);
   idleTimer=startTimer(500);
+  setWindowOpacity(0.01);
 }
 
 Whtbrd_Splash::~Whtbrd_Splash() {
@@ -43,20 +44,18 @@ void Whtbrd_Splash::_addMsg(const QString &msg)
   _msg+=msg+"\n";
   showMessage(_msg,Qt::AlignLeft|Qt::AlignBottom,Qt::darkGreen);
   show();
+  std::cout << msg.toStdString()<<std::endl;
 }
 
 void Whtbrd_Splash::timerEvent(QTimerEvent *event) {
-  if(++idle>10) {
+  if(++idle>20) {
     if(isVisible()) {
       fromHere("hiding");
       hide();
     }
-    if(idle>30) {
+    if(idle>20) {
       fromHere("closing");
       close();
-      //killTimer(idleTimer);
-      //auto tlw=QApplication::topLevelWidgets();
-      //qDebug()<< "have " << tlw.size() << "widgets  ";
     }
   }
 }

@@ -17,8 +17,10 @@
 #include <QDebugStateSaver>
 #include <QBuffer>
 #include <QFileInfo>
+#include <QPluginLoader>
+#include <iostream>
+#include <QQueue>
 
-// #include <whtbrd_startup.hh>
 #include <whtbrd_common.hh>
 
 #include <splash.hh>

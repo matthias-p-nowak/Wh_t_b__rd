@@ -1,11 +1,8 @@
 message("--- plugins ---")
 
-find_package(Qt5Core REQUIRED)
-if(Qt5Core_FOUND)
-  message("Qt5 core found")
-else()
-  message("Qt5Core_found not defined")
-endif()
+
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+
 
 add_subdirectory(common)
 add_subdirectory(workbench)
