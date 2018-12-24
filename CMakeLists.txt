@@ -22,7 +22,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/plugins)
 
 add_subdirectory(whtbrd)
-add_subdirectory(startup)
 add_subdirectory(plugins)
 
 # 2 be deleted later on

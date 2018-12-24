@@ -111,6 +111,7 @@ int main(int argc, char *argv[]) {
     qDebug()<<"loading plugins";
     QQueue<QString> pluginQueue;
     reqPlugins.swap(pluginQueue);
+    QList<QObject*> pluginList;
     int failed=0;
     while(failed++<pluginQueue.size()) {
       QString pluginName=pluginQueue.dequeue();
@@ -124,12 +125,8 @@ int main(int argc, char *argv[]) {
         reqPlugins += pluginName;
         qDebug()<<"success";
         QObject *plugin=loader.instance();
-        IWhtbrdPlugin *wp=qobject_cast<IWhtbrdPlugin *>(plugin);
-        if(wp) {
-          qDebug() << "interface" << wp->name() << "loaded";
-          wp->startup();
-          TIMING
-        }
+        if(plugin)
+          pluginList.append(plugin);
       }
     }
     if(!reqPlugins.empty()) {
@@ -138,6 +135,16 @@ int main(int argc, char *argv[]) {
     if(!pluginQueue.empty()) {
       for(QString n: pluginQueue) {
         qDebug()<< "plugin" << n<< "not loaded";
+      }
+    }
+    qDebug()<<"all loaded";
+    TIMING
+    for(QObject *plugin: pluginList) {
+      IWhtbrdPlugin *wp=qobject_cast<IWhtbrdPlugin *>(plugin);
+      if(wp) {
+        qDebug() << "interface" << wp->name() << "loaded";
+        wp->startup();
+        TIMING
       }
     }
     TIMING
