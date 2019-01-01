@@ -20,6 +20,9 @@
 #include <QPluginLoader>
 #include <iostream>
 #include <QQueue>
+#include <QLinkedList>
+#include <QCommandLineParser>
+#include <QMessageBox>
 
 #include <whtbrd_common.hh>
 

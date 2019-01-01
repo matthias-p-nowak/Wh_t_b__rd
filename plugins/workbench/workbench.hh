@@ -6,14 +6,13 @@
 #include <QDebug>
 
 
-class WorkbenchPlugin: public QObject , public IWhtbrdPlugin{
+class WorkbenchPlugin: public IWhtbrdPlugin{
   Q_OBJECT
   Q_INTERFACES(IWhtbrdPlugin)
   Q_PLUGIN_METADATA(IID IWhtbrdPluginName FILE "workbench.json")
   
 public:
-  QString name();
-  void startup();
+  void startup(QLinkedList<QObject *> &plugins) override;
 };
 
 #endif

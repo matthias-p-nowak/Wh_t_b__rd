@@ -1,21 +1,7 @@
 #include <startup.hh>
 
-// char **cmdLine=NULL;
-// struct WHTBRG_settings whtbrg_settings;
-
 using namespace std;
 
-void print_usage() {
-  /// @brief usages of the program
-  printf("Wh.t.b..rd - the simple program to present simple explanations\n"
-         "use: whtbrd [-v] [-c configuration] [-L <plugin path>] [-p <plugin>] [<presentation>]\n"
-         "	-v                increase verbosity\n"
-         "	-L <plugin path>  add the <plugin path> to the list of directories for plugins\n"
-         "	-p <plugin>       add the <plugin> to the list of plugins to load\n"
-
-         "\n");
-  exit(EXIT_SUCCESS);
-}
 
 void print_timing(const char *file, int line) {
   static double sofar=0;
@@ -37,41 +23,42 @@ void print_timing(const char *file, int line) {
 
 
 
+#define STR(x) #x
+
 int main(int argc, char *argv[]) {
   TIMING
   QApplication whtbrd_App(argc, argv);
+  whtbrd_App.setOrganizationName("Wh_t_b__rd");
+  whtbrd_App.setApplicationName("whtbrd");
+  whtbrd_App.setApplicationVersion(STR(WHTBRD_VERSION));
   TIMING
-  Whtbrd_Splash::init();
-  TIMING
+  QLinkedList<QObject*> pluginList;
   {
-    int opt;
-    QStringList reqPluginDirs;
-    QStringList reqPlugins;
-    while ((opt = getopt(argc, argv, "L:p:v")) != -1) {
-      switch (opt) {
-      case 'L':
-      {
-        QString newDir(optarg);
-        QFileInfo fi(newDir);
-        fi.makeAbsolute();
-        reqPluginDirs.append(fi.filePath());
-        break;
-      }
-      case 'p':
-      {
-        QString plugin(optarg);
-        reqPlugins.append(plugin);
-        break;
-      }
-      case 'v': {
-        int v=qDebug().verbosity()+1;
-        qDebug().setVerbosity(v);
-        break;
-      }
-      default:
-        print_usage();
-      }
-    } // getopts
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Wh.t.b..rd presenting program");
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("presentation","the presentation to show");
+    QCommandLineOption pluginOption(QStringList() << "p" << "plugin","add a <plugin> to it","plugin");
+    parser.addOption(pluginOption);
+
+    QCommandLineOption dirOption(QStringList()<<"L"<<"directory","add a <directory> to the plugin search path","directory");
+    parser.addOption(dirOption);
+    TIMING
+    if(!parser.parse(whtbrd_App.arguments())){
+    QMessageBox msgBox;
+      msgBox.setText("Wrong arguments");
+      msgBox.setInformativeText(parser.errorText()+"\n\n"+parser.helpText());
+    msgBox.exec();
+    // std::cerr <<parser.errorText().toStdString()<<std::endl<<std::endl;
+    // std::cerr <<parser.helpText().toStdString()<<std::endl;
+    }
+    parser.process(whtbrd_App);
+    Whtbrd_Splash::init();
+    TIMING
+    QStringList reqPluginDirs=parser.values(dirOption);
+    QStringList reqPlugins=parser.values(pluginOption);
+
     TIMING
     QSettings setting("Wh_t_b__rd","whtbrd");
     QVariant var;
@@ -94,6 +81,7 @@ int main(int argc, char *argv[]) {
     if(reqPluginDirs.empty())
       setting.remove(_pluginDirs);
     else {
+
       reqPluginDirs.removeDuplicates();
       setting.setValue(_pluginDirs,reqPluginDirs);
     }
@@ -111,7 +99,6 @@ int main(int argc, char *argv[]) {
     qDebug()<<"loading plugins";
     QQueue<QString> pluginQueue;
     reqPlugins.swap(pluginQueue);
-    QList<QObject*> pluginList;
     int failed=0;
     while(failed++<pluginQueue.size()) {
       QString pluginName=pluginQueue.dequeue();
@@ -142,8 +129,8 @@ int main(int argc, char *argv[]) {
     for(QObject *plugin: pluginList) {
       IWhtbrdPlugin *wp=qobject_cast<IWhtbrdPlugin *>(plugin);
       if(wp) {
-        qDebug() << "interface" << wp->name() << "loaded";
-        wp->startup();
+        wp->startup(pluginList);
+        qDebug() << "interface"<< wp->objectName() << "loaded";
         TIMING
       }
     }

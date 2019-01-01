@@ -1,5 +1,7 @@
-#ifndef INCLUDED201812172
-#define INCLUDED201812172
+#ifndef INC_ncyj49fCw4
+#define INC_ncyj49fCw4
+
+#error("obsolete header")
 
 #define fromHere(msg) printf("%s:%d: %s\n",__FILE__,__LINE__,msg)
 

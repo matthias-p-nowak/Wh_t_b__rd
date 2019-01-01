@@ -2,12 +2,9 @@
 
 using namespace std;
 
-QString WorkbenchPlugin::name(){
-  return "workbench";
-}
-
-void WorkbenchPlugin::startup(){
+void WorkbenchPlugin::startup(QLinkedList<QObject *> &plugins){
   qDebug()<<"workbench starting up";
+  setObjectName("workbench");
 }
 
 class _Dummy{

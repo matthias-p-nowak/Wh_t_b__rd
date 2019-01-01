@@ -2,12 +2,9 @@
 
 using namespace std;
 
-QString CommonPlugin::name(){
-  return "common";
-}
-
-void CommonPlugin::startup(){
+void CommonPlugin::startup(QLinkedList<QObject *> &plugins){
   qDebug()<< "common firing up";
+  setObjectName("common");
 }
 
 CommonPlugin::~CommonPlugin(){
