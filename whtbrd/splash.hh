@@ -1,5 +1,5 @@
-#ifndef INCLUDED_201812221
-#define INCLUDED_201812221
+#ifndef INC_absEc4Sdks5
+#define INC_absEc4Sdks5
 
 #include <startup.hh> // only needed when generating moc files
 

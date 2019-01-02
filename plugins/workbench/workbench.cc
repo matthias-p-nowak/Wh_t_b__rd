@@ -2,9 +2,12 @@
 
 using namespace std;
 
+
 void WorkbenchPlugin::startup(QLinkedList<QObject *> &plugins){
   qDebug()<<"workbench starting up";
   setObjectName("workbench");
+  MainWindow *mw=MainWindow::getInstance();
+  mw->show();
 }
 
 class _Dummy{

@@ -1,19 +1,16 @@
-#ifndef INC_VGYnNgUTW4e
-#define INC_VGYnNgUTW4e
+#ifndef INC_h96GkDIjTr4
+#define INC_h96GkDIjTr4
 
 #include <whtbrd_common.hh>
-#include <mainwindow.hh>
 #include <QDebug>
 
-
-class WorkbenchPlugin: public IWhtbrdPlugin{
+class DummyPlugin: public IWhtbrdPlugin{
   Q_OBJECT
   Q_INTERFACES(IWhtbrdPlugin)
-  // Q_PLUGIN_METADATA(IID IWhtbrdPluginName FILE "workbench.json")
+  // Q_PLUGIN_METADATA(IID IWhtbrdPluginName FILE "dummy.json")
   Q_PLUGIN_METADATA(IID IWhtbrdPluginName )
   
 public:
   void startup(QLinkedList<QObject *> &plugins) override;
 };
-
 #endif

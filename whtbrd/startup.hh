@@ -1,5 +1,5 @@
-#ifndef INCLUDED_201812201
-#define INCLUDED_201812201
+#ifndef INC_5MSqVegf0Ld
+#define INC_5MSqVegf0Ld
 
 #include <QApplication>
 #include <QSplashScreen>
@@ -28,4 +28,4 @@
 
 #include <splash.hh>
 
-#endif //
+#endif

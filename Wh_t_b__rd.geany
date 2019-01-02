@@ -28,14 +28,22 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=3
-FILE_NAME_0=1712;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-testing%2Ftest_settings.cc;0;2
-FILE_NAME_1=532;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fwhtbrd%2Fsplash.cc;0;2
-FILE_NAME_2=1305;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fwhtbrd%2Fstartup.cc;0;2
-FILE_NAME_3=539;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fwhtbrd%2Fstartup.hh;0;2
+current_page=0
+FILE_NAME_0=85;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2FCMakeLists.txt;0;2
+FILE_NAME_1=223;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2Fworkbench.cc;0;2
+FILE_NAME_2=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-testing%2Fmainwindow.cc;0;2
+FILE_NAME_3=0;None;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-testing%2Fqt-testing.geany;0;2
+FILE_NAME_4=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fwhtbrd%2Fstartup.cc;0;2
+FILE_NAME_5=77;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2Fworkbench.hh;0;2
+FILE_NAME_6=66;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-testing%2Fmainwindow.hh;0;2
+FILE_NAME_7=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-testing%2Ftest-anim.cc;0;2
+FILE_NAME_8=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-testing%2Ftest-fullscreen.cc;0;2
+FILE_NAME_9=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-testing%2Ftest-mainwindow.cc;0;2
+FILE_NAME_10=66;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2Fmainwindow.hh;0;2
+FILE_NAME_11=23;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-test2%2Ft-libs%2FCMakeLists.txt;0;2
 
 [VTE]
-last_dir=/home/me/projects/Wh_t_b__rd/whtbrd
+last_dir=/home/me/projects/Wh_t_b__rd/plugins/workbench
 
 [build-menu]
 EX_00_LB=_Execute
@@ -47,23 +55,29 @@ NF_00_WD=%pbuild
 NF_01_LB=Make Custom _Target...
 NF_01_CM=ninja -v 
 NF_01_WD=%pbuild
-C++FT_00_LB=_Compile
-C++FT_00_CM=md5sum %f
-C++FT_00_WD=
 C++FT_01_LB=_Build
 C++FT_01_CM=ninja -v
 C++FT_01_WD=%pbuild
-filetypes=C++;
+filetypes=C++;CMake;
+CMakeFT_00_LB=Ninja
+CMakeFT_00_CM=ninja -v
+CMakeFT_00_WD=%pbuild
 
 [debugger]
 target=/home/me/projects/Wh_t_b__rd/build/bin/whtbrd
 debugger=GDB
 arguments=
 envvar_count=0
-watches_count=0
-breaks_count=1
+watches_count=1
+watch_0=msg.toStdString()
+breaks_count=2
 break_0_file=/home/me/projects/Wh_t_b__rd/plugins/base/base.cc
 break_0_line=13
 break_0_condition=
 break_0_hits_count=0
 break_0_enabled=true
+break_1_file=/home/me/projects/Wh_t_b__rd/whtbrd/splash.cc
+break_1_line=33
+break_1_condition=
+break_1_hits_count=0
+break_1_enabled=true
