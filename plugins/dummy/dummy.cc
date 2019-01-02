@@ -1,6 +1,9 @@
 #include <dummy.hh>
 
-void DummyPlugin::startup(QLinkedList<QObject *> &plugins){
+/**
+ * more later
+ */
+void DummyPlugin::startup(){
   qDebug()<< "dummy firing up";
   setObjectName("dummy");
 }

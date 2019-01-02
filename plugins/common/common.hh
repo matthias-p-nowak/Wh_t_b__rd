@@ -6,15 +6,16 @@
 #include <QDebug>
 #include <QtPlugin>
 
+/**
+ * a simple plugin - good as a starting point
+ */
 class CommonPlugin: public IWhtbrdPlugin{
   Q_OBJECT
   Q_INTERFACES(IWhtbrdPlugin)
   // Q_PLUGIN_METADATA(IID IWhtbrdPluginName FILE "common.json")
   Q_PLUGIN_METADATA(IID IWhtbrdPluginName )
-  
 public:
-  ~CommonPlugin();
-  void startup(QLinkedList<QObject *> &plugins) override;
+  void startup() override;
 };
 
 #endif

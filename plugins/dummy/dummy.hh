@@ -11,6 +11,6 @@ class DummyPlugin: public IWhtbrdPlugin{
   Q_PLUGIN_METADATA(IID IWhtbrdPluginName )
   
 public:
-  void startup(QLinkedList<QObject *> &plugins) override;
+  void startup() override;
 };
 #endif

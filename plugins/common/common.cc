@@ -1,19 +1,12 @@
 #include <common.hh>
 
+/**
+ * almost nothing to do
+ */
 using namespace std;
 
-void CommonPlugin::startup(QLinkedList<QObject *> &plugins){
+void CommonPlugin::startup(){
   qDebug()<< "common firing up";
+  fromHere("Common plugin");
   setObjectName("common");
 }
-
-CommonPlugin::~CommonPlugin(){
-  qDebug()<<"destroying CommonPlugin";
-}
-
-class _Dummy{
-  public:
-  _Dummy(){
-    fromHere("hello from common part");
-  }
-} _dummy;

@@ -1,5 +1,11 @@
 message("--- debugTarget ---")
 
+#
+# First we define 3 sets of properties for targets, sources and directories
+# 
+# then we define the function debugTarget
+# 
+
 set(_target_properties
 ALIASED_TARGET
 BINARY_DIR
@@ -162,22 +168,26 @@ VARIABLES
 )
 
 function(debugTarget _target)
+  # a hello
   message("debugging ${_target}")
-     foreach(_prop ${_target_properties})
-      get_property(_val TARGET ${_target} PROPERTY ${_prop})
-      if(_val)
-        message("${_prop}@${_target} = ${_val}")
-      endif()
-    endforeach()
+  # inspecting target
+  foreach(_prop ${_target_properties})
+    get_property(_val TARGET ${_target} PROPERTY ${_prop})
+    if(_val)
+      message("${_prop}@${_target} = ${_val}")
+    endif()
+  endforeach()
+  # inspecting sources
   get_property(_sources TARGET ${_target} PROPERTY SOURCES)
   foreach(_source ${_sources})
-      foreach(_prop ${_source_properties})
-         get_property(_val SOURCE ${_source} PROPERTY ${_prop})
-        if(_val)
-          message("${_prop}@${_target}/${_source} = ${_val}")
-        endif()
-      endforeach()
+    foreach(_prop ${_source_properties})
+       get_property(_val SOURCE ${_source} PROPERTY ${_prop})
+      if(_val)
+        message("${_prop}@${_target}/${_source} = ${_val}")
+      endif()
+    endforeach()
   endforeach()
+  # inspecting directories
   message("debugging directory ${CMAKE_CURRENT_SOURCE_DIR}")
   foreach(_prop @{_dir_properties})
     get_directory_property(_val ${_prop})
