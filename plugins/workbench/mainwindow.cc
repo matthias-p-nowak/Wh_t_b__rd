@@ -124,7 +124,22 @@ void MainWindow::showMessage(QString msg) {
  * Main window reacts to menu items and key strokes
  */
 void MainWindow::keyPressEvent(QKeyEvent *event){
-  qDebug()<< QString("got a key '%1' %2").arg(event->text()).arg(event->key());
-  
-  QMainWindow::keyPressEvent(event);
+  auto key=event->key();
+   switch(key) {
+  case Qt::Key_Space:
+  case Qt::Key_Down:
+  case Qt::Key_Enter:
+  case Qt::Key_Return:
+  case Qt::Key_PageDown:
+  case Qt::Key_Up:
+  case Qt::Key_Backspace:
+  case Qt::Key_PageUp:
+  case Qt::Key_Left:
+  case Qt::Key_Right:
+    fullScreenWidget.showFullScreen();
+  break;
+  default:
+    QMainWindow::keyPressEvent(event);
+    break;
+  }
 }
