@@ -13,4 +13,11 @@ class DummyPlugin: public IWhtbrdPlugin{
 public:
   void startup() override;
 };
+
+class Dummy_Cmd: public Whtbrd_Cmd{
+public:
+  Dummy_Cmd();
+  ~Dummy_Cmd();
+  void exec();
+};
 #endif

@@ -7,21 +7,21 @@
 #define C_SECTION_NAME "mainwindow"
 
 MainWindow * MainWindow::instance=NULL;
-
+QtMessageHandler oldMsgHandler=NULL;
 /**
  * a normal C function that is a message handler for Qt's log
  * add to log system by getInstance
  */
 void addMsg(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
+  if(oldMsgHandler)
+    oldMsgHandler(type,context,msg);
   // when the app is closing, displaying messages on screen will fail
   if(qApp->closingDown()) {
     // the widget stuff will fail
     qInstallMessageHandler(0); // back to default
-    qDebug()<<msg;
     return;
   }
   MainWindow::getInstance()->showMessage(msg);
-  //std::cout << msg.toStdString()<<std::endl;
 }
 
 /**
@@ -48,9 +48,12 @@ MainWindow::MainWindow() {
   //
   auto toolMenu= menuBar()->addMenu("&Tools");
   toolMenu->addAction("&FullScreen",this,&MainWindow::fullScreen,QKeySequence("F5"));
+  toolMenu->addAction("Add &plugin",this,&MainWindow::dummy);
   // -----
-  // TODO set the central widget, add toolbars
+  // TODO set the central widget, 
+  // TODO add toolbars
   // 
+  setCentralWidget(new Preview());
   // ----- postponing other actions -----
   QTimer::singleShot(0, this, &MainWindow::doIdleWork);
 }
@@ -67,7 +70,8 @@ MainWindow * MainWindow::getInstance() {
   if(!instance) {
     qDebug()<< "creating mainwindow instance";
     instance=new MainWindow();
-    qInstallMessageHandler(addMsg);
+    qInstallMessageHandler(0); // remove splash - go back to default
+    oldMsgHandler=qInstallMessageHandler(addMsg);
   }
   return instance;
 }
@@ -84,8 +88,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 // actions can't call closeEvent
 void MainWindow::closeMain(bool triggered){
-  // emits the event
-  close();
+  qApp->closeAllWindows();
 }
 
 void MainWindow::doIdleWork() {
@@ -105,8 +108,9 @@ void MainWindow::dummy(bool triggered) {
 /**
  * for actions that trigger full screen
  */
-void MainWindow::fullScreen(bool triggered){
+void MainWindow::fullScreen(bool _ignored){
   qDebug()<<"fullscreen";
+  fullScreenWidget.showFullScreen();
 }
 
 /**

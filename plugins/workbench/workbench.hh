@@ -3,6 +3,8 @@
 
 #include <whtbrd_common.hh>
 #include <mainwindow.hh>
+#include <preview.hh>
+#include <fullscreen.hh>
 #include <QDebug>
 
 

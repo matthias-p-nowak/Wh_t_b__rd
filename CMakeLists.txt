@@ -18,7 +18,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debug)
 
 # the global include file which all plugins need to know
-include_directories(${CMAKE_HOME_DIRECTORY}/include )
+set(WHTBRD_INC ${CMAKE_HOME_DIRECTORY}/include)
+include_directories( ${WHTBRD_INC})
+file(GLOB WHTBRD_INCS ${WHTBRD_INC}/*.hh )
 add_definitions(-DWHTBRD_VERSION=${Wh_t_b__rd_VERSION} )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

@@ -9,6 +9,7 @@
 #include <QStatusBar>
 #include <QSettings>
 #include <QTimer>
+#include <fullscreen.hh>
 
 /**
  * Main window for Wh.t.b..rd.
@@ -24,14 +25,15 @@ public:
  
 private:
   static MainWindow *instance;
+  FullScreen fullScreenWidget;
   MainWindow(); // only getInstance can create main windows
 
 public slots:
   void closeEvent(QCloseEvent *event);
-  void closeMain(bool triggered=true);
+  void closeMain(bool checked=false);
   void doIdleWork();
-  void dummy(bool triggered=true); // dummy slot
-  void fullScreen(bool triggered=true);
+  void dummy(bool checked=false); // dummy slot
+  void fullScreen(bool _ignored);
 
 };
 #endif

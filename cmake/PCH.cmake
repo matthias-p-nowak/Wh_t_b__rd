@@ -68,7 +68,7 @@ function(add_precompiled_header _target _input)
     #message("additional headers are ${_PCH_HDRS}")
     set(_pch_headers)
     foreach(_ah ${_PCH_HDRS})
-      list(APPEND _pch_headers "${CMAKE_CURRENT_SOURCE_DIR}/${_ah}")
+      list(APPEND _pch_headers "${_ah}")
     endforeach()
   endif()
   
@@ -158,15 +158,14 @@ function(add_precompiled_header _target _input)
     set(_incl_dirs $<TARGET_PROPERTY:${_target},INCLUDE_DIRECTORIES>)
     list(APPEND _compile $<$<BOOL:${_incl_dirs}>:-I$<JOIN:${_incl_dirs},\t-I>>)    
 
-    list(APPEND _compile "-o" "${_pchfile}" "${_pch_header}")
-
-    #message("_compile is ${_compile}")
+    set(_compile1 "-o" "${_pchfile}" "${_pch_header}")
+    
     add_custom_command(
       OUTPUT "${_pchfile}"
-      COMMAND ${_compile}   #it automatically expands the list to arguments
+      COMMAND ${_compile}  ${_compile1} #it automatically expands the list to arguments
       DEPENDS ${_pch_header} ${_pch_headers}
-      COMMENT "Precompiling ${_name} for ${_target} (C++)")
-    
+      COMMENT "Precompiling ${_name} for ${_target} (C++)")    
+ 
     # not necessary, but good for developing
     target_compile_options(${_target} PUBLIC -Winvalid-pch)
     

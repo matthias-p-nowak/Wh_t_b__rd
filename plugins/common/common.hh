@@ -2,9 +2,11 @@
 #define INC_8UsLgj6iHQk
 
 #include <whtbrd_common.hh>
-
+#include <whtbrd_show.hh>
 #include <QDebug>
 #include <QtPlugin>
+#include <unordered_set>
+#include <utility>
 
 /**
  * a simple plugin - good as a starting point

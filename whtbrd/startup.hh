@@ -22,8 +22,9 @@
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <QTextStream>
 
-#include <whtbrd_common.hh>
+#include <whtbrd_base.hh>
 
 #include <splash.hh>
 

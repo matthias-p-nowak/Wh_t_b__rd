@@ -8,13 +8,15 @@
 
 // one instance
 Whtbrd_Splash * instance=NULL;
+QtMessageHandler oldMsgHandler=NULL;
 
 void _addMsg(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
+  if(oldMsgHandler)
+    oldMsgHandler(type,context,msg);
   if(qApp->closingDown()) {
     // app shuts down and all ui will fail
-    qInstallMessageHandler(0); // revert to default handler
-    qDebug()<<msg; // relaying that message
+    qInstallMessageHandler(oldMsgHandler); // revert to default handler
     return;
   }
   if(instance)
@@ -41,7 +43,7 @@ void Whtbrd_Splash::init() {
   fromHere("initializing splash");
   if(instance==NULL) {
     instance=new Whtbrd_Splash();
-    qInstallMessageHandler(_addMsg); // get debug to show in splash
+    oldMsgHandler= qInstallMessageHandler(_addMsg); // get debug to show in splash
   }
   qDebug()<< "splash initialized";
 }
@@ -64,7 +66,7 @@ void Whtbrd_Splash::addMsg(const QString &msg)
 }
 
 /**
- * the splash disappears after 5 seconds 
+ * the splash disappears after 5 seconds
  */
 void Whtbrd_Splash::timerEvent(QTimerEvent *event) {
   if(++idle>5) {
