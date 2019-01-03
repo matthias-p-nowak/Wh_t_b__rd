@@ -1,21 +1,26 @@
-#ifndef INCLUDED_201812221
-#define INCLUDED_201812221
+#ifndef INC_absEc4Sdks5
+#define INC_absEc4Sdks5
 
-#include <startup.hh> // only needed when generating moc files
+// #include <startup.hh> // only needed when generating moc files
 
+/**
+ * Traditional splash screen with debug messages
+ * call Whtbrd_Splash::init() and then forget the splash
+ */
 class Whtbrd_Splash: public QSplashScreen{
 private:
   Whtbrd_Splash();
   ~Whtbrd_Splash();
-  static Whtbrd_Splash *instance;
+  // the current set of messages, combined into one string
   QString _msg;
+  // counting up idle calls
   int idle=0;
-  int idleTimer;
-  void _addMsg(const QString &msg);
   void timerEvent(QTimerEvent *event);
 public:
+  // addMsg is public but unusable, because no Whtbrd_Splash object is available
+  void addMsg(const QString &msg);
+  // creates and shows the splash screen
   static void init();
-  static void addMsg(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 };
 
 #endif

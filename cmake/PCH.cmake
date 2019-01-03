@@ -51,13 +51,15 @@
 
 message(STATUS "cmake function add_precompiled_header included")
 
+## uncomment the following line for debugging of targets
 #include("cmake/debugTarget.cmake")
 
 #
-# Use 'add_precompiled_header(<target> <header file>)' for each target. 
+# Use 'add_precompiled_header(<target> <header file> HDRS ... )' for each target. 
 # CXX files should have an '#include <header.h>' with "header.h" being
 # replaced by your header file. The header file should employ guards type
 # '#ifdef XX \n #define XX'
+# The files after HDRS are included files that trigger recompilation
 #
 function(add_precompiled_header _target _input)
   #message("got request for precompiled ${_input} for ${_target} lang ${lang}")
@@ -66,9 +68,10 @@ function(add_precompiled_header _target _input)
     #message("additional headers are ${_PCH_HDRS}")
     set(_pch_headers)
     foreach(_ah ${_PCH_HDRS})
-      list(APPEND _pch_headers "${CMAKE_CURRENT_SOURCE_DIR}/${_ah}")
+      list(APPEND _pch_headers "${_ah}")
     endforeach()
   endif()
+  
   if(CMAKE_COMPILER_IS_GNUCXX)
     # for the moment ignore all other compilers
     if(COMMAND debugTarget)
@@ -89,7 +92,7 @@ function(add_precompiled_header _target _input)
     # we build the command for compiling the precompiled header as a list
     set(_compile ${CMAKE_CXX_COMPILER})
 
-    # collecting all compiler flags
+    # collecting some compiler flags
     get_property(_pic TARGET ${_target} PROPERTY POSITION_INDEPENDENT_CODE)
     if(_pic)
       get_property(_type TARGET ${_target} PROPERTY TYPE)
@@ -108,8 +111,6 @@ function(add_precompiled_header _target _input)
     # using Remove_doubles at the end of collecting
     # 
 
-    
-    
     get_property(_ext TARGET ${_target} PROPERTY CXX_STANDARD)
     if(_ext)
       list(APPEND _compile ${CMAKE_CXX${_ext}_EXTENSION_COMPILE_OPTION})
@@ -145,11 +146,10 @@ function(add_precompiled_header _target _input)
     #TODO: don't know what to do with compile features
     #set(_compile_features $<TARGET_PROPERTY:${_target},COMPILE_FEATURES>)
     #list(APPEND _compile $<$<BOOL:${_compile_features}>:-D$<JOIN:${_compile_features},\t-D>>)    
+
     set(_compile_flags $<TARGET_PROPERTY:${_target},COMPILE_FLAGS>)
     list(APPEND _compile $<$<BOOL:${_compile_flags}>:-XCFL$<JOIN:${_compile_flags},\t-XCFL>>)    
-
     list(APPEND _compile $<JOIN:$<TARGET_PROPERTY:${_target},COMPILE_OPTIONS>,\t>)
-
     list(APPEND _compile ${CMAKE_CXX_FLAGS_${_bt}})
 
     set(_compile_defs $<TARGET_PROPERTY:${_target},COMPILE_DEFINITIONS>)
@@ -158,15 +158,14 @@ function(add_precompiled_header _target _input)
     set(_incl_dirs $<TARGET_PROPERTY:${_target},INCLUDE_DIRECTORIES>)
     list(APPEND _compile $<$<BOOL:${_incl_dirs}>:-I$<JOIN:${_incl_dirs},\t-I>>)    
 
-    list(APPEND _compile "-o" "${_pchfile}" "${_pch_header}")
+    set(_compile1 "-o" "${_pchfile}" "${_pch_header}")
     
-    #message("_compile is ${_compile}")
     add_custom_command(
       OUTPUT "${_pchfile}"
-      COMMAND ${_compile}   #it automatically expands the list to arguments
+      COMMAND ${_compile}  ${_compile1} #it automatically expands the list to arguments
       DEPENDS ${_pch_header} ${_pch_headers}
-      COMMENT "Precompiling ${_name} for ${_target} (C++)")
-    
+      COMMENT "Precompiling ${_name} for ${_target} (C++)")    
+ 
     # not necessary, but good for developing
     target_compile_options(${_target} PUBLIC -Winvalid-pch)
     

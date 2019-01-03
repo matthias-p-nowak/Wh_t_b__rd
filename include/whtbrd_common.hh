@@ -1,19 +1,22 @@
-#ifndef INCLUDED_201812222
-#define INCLUDED_201812222
+#ifndef INC_VEhJgHBhI79
+#define INC_VEhJgHBhI79
 
-#include <QtPlugin>
+#include <string>
+#include <list>
+#include <whtbrd_base.hh>
+#include <whtbrd_show.hh>
 
-#define fromHere(msg) printf("%s:%d: %s\n",__FILE__,__LINE__,msg)
+class Whtbrd_Cmd: public Base{
 
-class IWhtbrdPlugin {
-  public:
-  virtual ~IWhtbrdPlugin(){}
-  virtual QString name()=0;
-  virtual void startup()=0;
+public:
+  Whtbrd_Cmd(std::string name);
+  virtual ~Whtbrd_Cmd();
+  static std::list<Whtbrd_Cmd *> getList();
+  std::string name;
+  virtual void exec()=0;
+  
+private:
+  static std::list<Whtbrd_Cmd *> cmds;
 };
-
-#define IWhtbrdPluginName "org.whtbrd.plugin/1.0"
-
-Q_DECLARE_INTERFACE(IWhtbrdPlugin, IWhtbrdPluginName)
 
 #endif

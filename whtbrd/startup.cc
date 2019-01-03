@@ -1,103 +1,115 @@
 #include <startup.hh>
 
-// char **cmdLine=NULL;
-// struct WHTBRG_settings whtbrg_settings;
+/**
+ * Wh.t.b..rd is a modularized program. The main function reads settings,
+ * loads modules and then runs the message queue.
+ * In addition a splash screen is displayed for debug messages
+ */
 
 using namespace std;
 
-void print_usage() {
-  /// @brief usages of the program
-  printf("Wh.t.b..rd - the simple program to present simple explanations\n"
-         "use: whtbrd [-v] [-c configuration] [-L <plugin path>] [-p <plugin>] [<presentation>]\n"
-         "	-v                increase verbosity\n"
-         "	-L <plugin path>  add the <plugin path> to the list of directories for plugins\n"
-         "	-p <plugin>       add the <plugin> to the list of plugins to load\n"
-
-         "\n");
-  exit(EXIT_SUCCESS);
-}
-
+/**
+ * a general purpose function that can be used for primitive profiling
+ */
 void print_timing(const char *file, int line) {
-  static double sofar=0;
+  static double spent=0; // remember from last call
   struct rusage usage;
   if(getrusage(RUSAGE_SELF, &usage)) {
     perror("rusage");
   }
   else {
+    // for simple access
     struct timeval *t=&usage.ru_utime;
-    double spent=t->tv_sec+ 1.0*t->tv_usec/1000000;
-    printf("%s:%d:time spent %f, sofar %f\n",file,line,spent-sofar,spent);
-    sofar=spent;
+    double recent=-spent; // second half of recent=spent(last time) - spent(newest)
+    spent=t->tv_sec+ t->tv_usec/1000000.0;
+    recent+=spent; // first half of difference
+    printf("%s:%d:time recent %f, spent %f\n",file,line,recent,spent);
   }
 }
 
 #define TIMING print_timing(__FILE__,__LINE__);
 
+/**
+ * The version is defined on the command line for CC compiler, might be
+ * translated as a number, but we need a string argument. This macro stringify
+ * does the job with "#x"
+ */
+#define STR(x) #x
 
-
-
-
+/**
+ * Main program
+ */
 int main(int argc, char *argv[]) {
-  TIMING
+  TIMING // measuring all dynamic linking including initializations
+  // Splash already demands a QApplication and we need Qt's plugin loading
+  // mechanism, hence going below QApplication doesn't make much sense.
   QApplication whtbrd_App(argc, argv);
-  TIMING
-  Whtbrd_Splash::init();
-  TIMING
+  whtbrd_App.setOrganizationName("Wh_t_b__rd");
+  whtbrd_App.setApplicationName("whtbrd");
+  whtbrd_App.setApplicationVersion(STR(WHTBRD_VERSION));
+  TIMING // for measuring QApplications initialization time
+  Whtbrd_Splash::init(); // showing splash screen
+  // the linked list is compiled and need to live until the end
+  QLinkedList<QObject*> pluginList;
   {
-    int opt;
-    QStringList reqPluginDirs;
-    QStringList reqPlugins;
-    while ((opt = getopt(argc, argv, "L:p:v")) != -1) {
-      switch (opt) {
-      case 'L':
-      {
-        QString newDir(optarg);
-        QFileInfo fi(newDir);
-        fi.makeAbsolute();
-        reqPluginDirs.append(fi.filePath());
-        break;
-      }
-      case 'p':
-      {
-        QString plugin(optarg);
-        reqPlugins.append(plugin);
-        break;
-      }
-      case 'v': {
-        int v=qDebug().verbosity()+1;
-        qDebug().setVerbosity(v);
-        break;
-      }
-      default:
-        print_usage();
-      }
-    } // getopts
-    TIMING
-    QSettings setting("Wh_t_b__rd","whtbrd");
-    QVariant var;
-    const char _plugins[]="plugins";
-    var=setting.value(_plugins);
-    if(!var.isNull()) {
-      reqPlugins += var.toStringList();
+    // a block for variables that should no longer exist when the
+    // message pump starts
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Wh.t.b..rd presenting program");
+    parser.addHelpOption(); // aka -h
+    parser.addVersionOption(); // aka -v
+    parser.addPositionalArgument("presentation","the presentation to show");
+    // -p
+    QCommandLineOption pluginOption(QStringList() << "p" << "plugin","add a <plugin> to it","plugin");
+    parser.addOption(pluginOption);
+    // -L
+    QCommandLineOption dirOption(QStringList()<<"L"<<"directory","add a <directory> to the plugin search path","directory");
+    parser.addOption(dirOption);
+    //
+    // 2 stage processing - first one for showing in QMessageBox (Windows)
+    if(!parser.parse(whtbrd_App.arguments())) {
+      // some error
+      QMessageBox msgBox;
+      msgBox.setText("Wrong arguments");
+      msgBox.setInformativeText(parser.errorText()+"\n\n"+parser.helpText());
+      msgBox.exec();
     }
+    // this call does the right thing for "-h" and "-v"
+    parser.process(whtbrd_App); // includes an exit in case of errors
+    // 
+    TIMING
+    QStringList reqPluginDirs=parser.values(dirOption);
+    QStringList reqPlugins=parser.values(pluginOption);
+    QSettings setting;
+    QVariant val; 
+    // which plugins to load
+    const char _plugins[]="plugins";
+    val=setting.value(_plugins);
+    if(!val.isNull()) {
+      reqPlugins += val.toStringList();
+    }
+    // storing updated plugin list
     if(reqPlugins.empty())
       setting.remove(_plugins);
     else {
       reqPlugins.removeDuplicates();
       setting.setValue(_plugins,reqPlugins);
     }
+    // which directories are relevant
     const char _pluginDirs[]="pluginDirs";
-    var=setting.value(_pluginDirs);
-    if(!var.isNull()) {
-      reqPluginDirs+=var.toStringList();
+    val=setting.value(_pluginDirs);
+    if(!val.isNull()) {
+      reqPluginDirs+=val.toStringList();
     }
+    // storing updated list
     if(reqPluginDirs.empty())
       setting.remove(_pluginDirs);
     else {
+
       reqPluginDirs.removeDuplicates();
       setting.setValue(_pluginDirs,reqPluginDirs);
     }
-    setting.sync();
+    setting.sync(); // we are not yet in the event loop, hence saving manually
     TIMING
     if(!reqPluginDirs.empty()) {
       auto paths=whtbrd_App.libraryPaths();
@@ -108,44 +120,53 @@ int main(int argc, char *argv[]) {
         }
       }
     }
+    // now loading all plugins or at least try
     qDebug()<<"loading plugins";
+    // Plugins might be dependend on other plugins and will fail when tried 
+    // too early. The are appended to the queue for another trial.
     QQueue<QString> pluginQueue;
+    // queue gets the plugins to try, reqPlugins has the successful ones
     reqPlugins.swap(pluginQueue);
-    int failed=0;
+    int failed=0; // the counter for consecutive failures
+    // failed == pluginQueue.size() is true when all elements have been tried
     while(failed++<pluginQueue.size()) {
+      // get one name
       QString pluginName=pluginQueue.dequeue();
       qDebug()<<"loading:"<<pluginName;
       QPluginLoader loader(pluginName);
       if(!loader.load()) {
+        // not this time
         qDebug() << pluginName <<":"<< loader.errorString();
-        pluginQueue.enqueue(pluginName);
+        pluginQueue.enqueue(pluginName); // for another trial
       } else {
-        failed=0;
-        reqPlugins += pluginName;
+        // good
+        failed=0; // reseting stop condition
+        reqPlugins += pluginName; // good one at this time
         qDebug()<<"success";
         QObject *plugin=loader.instance();
-        IWhtbrdPlugin *wp=qobject_cast<IWhtbrdPlugin *>(plugin);
-        if(wp) {
-          qDebug() << "interface" << wp->name() << "loaded";
-          wp->startup();
-          TIMING
-        }
+        if(plugin)
+          pluginList.append(plugin);
       }
     }
     if(!reqPlugins.empty()) {
+      // update the list with the good ones
       setting.setValue(_plugins,reqPlugins);
     }
-    if(!pluginQueue.empty()) {
-      for(QString n: pluginQueue) {
-        qDebug()<< "plugin" << n<< "not loaded";
+    qDebug()<<"plugins loaded, starting them";
+    TIMING
+    for(QObject *plugin: pluginList) {
+      // try to get an Wh.t.b..rd plugin from the list
+      IWhtbrdPlugin *wp=qobject_cast<IWhtbrdPlugin *>(plugin);
+      if(wp) {
+        wp->startup();
+        qDebug() << "interface"<< wp->objectName() << "loaded";
       }
     }
     TIMING
   }
-
   qDebug()<< "starting to run application";
-  whtbrd_App.setQuitOnLastWindowClosed(true);
   whtbrd_App.exec();
+  // last window got closed
   fromHere("about to exit main");
   TIMING
 }

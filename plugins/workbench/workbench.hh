@@ -1,19 +1,21 @@
-#ifndef INCLUDED_201812223
-#define INCLUDED_201812223
+#ifndef INC_VGYnNgUTW4e
+#define INC_VGYnNgUTW4e
 
 #include <whtbrd_common.hh>
-
+#include <mainwindow.hh>
+#include <preview.hh>
+#include <fullscreen.hh>
 #include <QDebug>
 
 
-class WorkbenchPlugin: public QObject , public IWhtbrdPlugin{
+class WorkbenchPlugin: public IWhtbrdPlugin{
   Q_OBJECT
   Q_INTERFACES(IWhtbrdPlugin)
-  Q_PLUGIN_METADATA(IID IWhtbrdPluginName FILE "workbench.json")
+  // Q_PLUGIN_METADATA(IID IWhtbrdPluginName FILE "workbench.json")
+  Q_PLUGIN_METADATA(IID IWhtbrdPluginName )
   
 public:
-  QString name();
-  void startup();
+  void startup() override;
 };
 
 #endif

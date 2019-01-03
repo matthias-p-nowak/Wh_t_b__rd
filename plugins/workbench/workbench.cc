@@ -2,18 +2,13 @@
 
 using namespace std;
 
-QString WorkbenchPlugin::name(){
-  return "workbench";
-}
-
+/**
+ * simply get the main window open
+ */
 void WorkbenchPlugin::startup(){
   qDebug()<<"workbench starting up";
+  setObjectName("workbench");
+  MainWindow *mw=MainWindow::getInstance();
+  mw->show();
 }
-
-class _Dummy{
-  public:
-  _Dummy(){
-    fromHere("hello from workbench");
-  }
-} _dummy;
 
