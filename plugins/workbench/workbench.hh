@@ -5,7 +5,11 @@
 #include <mainwindow.hh>
 #include <preview.hh>
 #include <fullscreen.hh>
+#include <comselwid.hh>
+#include <editCmd.hh>
+
 #include <QDebug>
+#include <QListWidgetItem>
 
 
 class WorkbenchPlugin: public IWhtbrdPlugin{

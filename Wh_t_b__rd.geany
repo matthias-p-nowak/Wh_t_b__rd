@@ -28,8 +28,15 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
-FILE_NAME_0=805;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2Ffullscreen.cc;0;2
+current_page=7
+FILE_NAME_0=882;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2Ffullscreen.cc;0;2
+FILE_NAME_1=156;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2Ffullscreen.hh;0;2
+FILE_NAME_2=288;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Finclude%2Fwhtbrd_show.hh;0;2
+FILE_NAME_3=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2Fqt-test2%2Ftest-lists%2Ftestlist.cc;0;2
+FILE_NAME_4=171;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fcommon%2Fshow.cc;0;2
+FILE_NAME_5=342;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fcommon%2FCMakeLists.txt;0;2
+FILE_NAME_6=439;CMake;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2FCMakeLists.txt;0;2
+FILE_NAME_7=3731;C++;0;EUTF-8;0;1;0;%2Fhome%2Fme%2Fprojects%2FWh_t_b__rd%2Fplugins%2Fworkbench%2Fmainwindow.cc;0;2
 
 [VTE]
 last_dir=/home/me/projects/Wh_t_b__rd/plugins/workbench
@@ -57,21 +64,12 @@ target=/home/me/projects/Wh_t_b__rd/build/bin/whtbrd
 debugger=GDB
 arguments=
 envvar_count=0
-watches_count=1
-watch_0=msg.toStdString()
-breaks_count=3
+watches_count=2
+watch_0=Base
+watch_1=typeid
+breaks_count=1
 break_0_file=/home/me/projects/Wh_t_b__rd/plugins/base/base.cc
 break_0_line=13
 break_0_condition=
 break_0_hits_count=0
 break_0_enabled=true
-break_1_file=/home/me/projects/Wh_t_b__rd/plugins/workbench/fullscreen.cc
-break_1_line=18
-break_1_condition=
-break_1_hits_count=0
-break_1_enabled=true
-break_2_file=/home/me/projects/Wh_t_b__rd/plugins/workbench/mainwindow.cc
-break_2_line=112
-break_2_condition=
-break_2_hits_count=0
-break_2_enabled=true

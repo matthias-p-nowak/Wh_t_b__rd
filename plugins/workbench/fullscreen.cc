@@ -2,6 +2,10 @@
 
 Whtbrd_Show* thisShow=NULL;
 
+/**
+ * This widget is to be shown full screen. It can't have a parent widget 
+ * in order to do that.
+ */
 FullScreen::FullScreen() {
   QPalette pal = palette();
   pal.setColor(QPalette::Background, Qt::white);
@@ -39,10 +43,26 @@ void FullScreen::keyPressEvent(QKeyEvent *event) {
   auto key=event->key();
   switch(key) {
   case Qt::Key_Space:
+  case Qt::Key_Down:
+  case Qt::Key_Enter:
+  case Qt::Key_Return:
+  case Qt::Key_PageDown:
     if(thisShow)
       thisShow->showNext();
     break;
-  
+  case Qt::Key_Up:
+  case Qt::Key_Backspace:
+  case Qt::Key_PageUp:
+    if(thisShow)
+      thisShow->showPrevious();
+    break;
+  case Qt::Key_Left:
+    if(thisShow)
+      thisShow->showPreviousSlot();
+    break;
+  case Qt::Key_Right:
+    if(thisShow)
+      thisShow->showNextSlot();
   default:
     hide();
     break;
@@ -50,5 +70,7 @@ void FullScreen::keyPressEvent(QKeyEvent *event) {
 }
 
 void FullScreen::showMeme(){
+  if(! isVisible())
+    return;
   fromHere("showing a new meme`");
 }

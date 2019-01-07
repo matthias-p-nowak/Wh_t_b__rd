@@ -23,6 +23,8 @@ include_directories( ${WHTBRD_INC})
 file(GLOB WHTBRD_INCS ${WHTBRD_INC}/*.hh )
 add_definitions(-DWHTBRD_VERSION=${Wh_t_b__rd_VERSION} )
 
+set(CMAKE_DEPFILE_FLAGS_${lang} "-MM -MT <OBJECT> -MF <DEPFILE>")
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/plugins)
 

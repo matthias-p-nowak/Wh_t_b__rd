@@ -11,12 +11,10 @@ class Whtbrd_Cmd: public Base{
 public:
   Whtbrd_Cmd(std::string name);
   virtual ~Whtbrd_Cmd();
-  static std::list<Whtbrd_Cmd *> getList();
   std::string name;
-  virtual void exec()=0;
+  virtual void exec()=0;  
+  static void getCmds(std::list<Whtbrd_Cmd *> &cmds);
   
-private:
-  static std::list<Whtbrd_Cmd *> cmds;
 };
 
 #endif
