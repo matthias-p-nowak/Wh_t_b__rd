@@ -10,5 +10,6 @@ void WorkbenchPlugin::startup(){
   setObjectName("workbench");
   MainWindow *mw=MainWindow::getInstance();
   mw->show();
+  new EditCommand();
 }
 

@@ -57,7 +57,8 @@ template<class T> T* dynamic_cast2(Base *p){
   static std::set<size_t> positive;
   static std::set<size_t> negative;
   // getting an id from the RTTI
-  size_t t=typeid(p).hash_code();
+  // fprintf(stderr,"got an element of type %s\n",typeid(*p).name());
+  size_t t=typeid(*p).hash_code();
   // Cache hits?
   if(positive.count(t))
     return static_cast<T*>(p);

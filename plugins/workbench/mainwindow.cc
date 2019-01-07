@@ -1,8 +1,9 @@
 #include <workbench.hh>
 /**
- * MainWindow 
+ * MainWindow
  */
 
+using namespace std;
 
 #define C_SECTION_NAME "mainwindow"
 
@@ -44,15 +45,16 @@ MainWindow::MainWindow() {
   fileMenu->addSeparator();
   fileMenu->addAction("&Quit",this,&MainWindow::closeMain,QKeySequence("Ctrl+Q"));
   //
-  auto cmdMenu=menuBar()->addMenu("&Commands");  
+  cmdMenu=menuBar()->addMenu("&Commands");
+  connect(cmdMenu,&QMenu::aboutToShow,this,&MainWindow::aboutToShowCmds);
   //
   auto toolMenu= menuBar()->addMenu("&Tools");
   toolMenu->addAction("&FullScreen",this,&MainWindow::fullScreen,QKeySequence("F5"));
   toolMenu->addAction("Add &plugin",this,&MainWindow::dummy);
   // -----
-  // TODO set the central widget, 
+  // TODO set the central widget,
   // TODO add toolbars
-  // 
+  //
   setCentralWidget(new Preview());
   // ----- postponing other actions -----
   QTimer::singleShot(0, this, &MainWindow::doIdleWork);
@@ -87,7 +89,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 }
 
 // actions can't call closeEvent
-void MainWindow::closeMain(bool triggered){
+void MainWindow::closeMain(bool triggered) {
   qApp->closeAllWindows();
 }
 
@@ -108,9 +110,40 @@ void MainWindow::dummy(bool triggered) {
 /**
  * for actions that trigger full screen
  */
-void MainWindow::fullScreen(bool _ignored){
+void MainWindow::fullScreen(bool _ignored) {
   qDebug()<<"fullscreen";
   fullScreenWidget.showFullScreen();
+}
+
+/**
+ * Command menu is dynamic and build in the order the commands are found
+ */
+void MainWindow::aboutToShowCmds() {
+  fromHere("retrieving all commands");
+  cmdMenu->clear();
+  list<Whtbrd_Cmd*>cmds;
+  Whtbrd_Cmd::getCmds(cmds);
+  for(auto cmd : cmds) {
+    auto action=cmdMenu->addAction(QString::fromStdString(cmd->name),this,&MainWindow::execCmd);
+
+  }
+}
+
+void MainWindow::execCmd(bool _ignored) {
+  fromHere("executing a command, but which?");
+  auto qa= qobject_cast<QAction *> (sender());
+  auto ct=qa->text();
+  qDebug() << "got " << ct;
+  list<Whtbrd_Cmd*>cmds;
+  Whtbrd_Cmd::getCmds(cmds);
+  for(auto cmd : cmds) {
+    auto an=QString::fromStdString(cmd->name);
+    if(ct == an) {
+      recentObjects(cmd);
+      cmd->exec();
+      return;
+    }
+  }
 }
 
 /**
@@ -123,9 +156,9 @@ void MainWindow::showMessage(QString msg) {
 /**
  * Main window reacts to menu items and key strokes
  */
-void MainWindow::keyPressEvent(QKeyEvent *event){
+void MainWindow::keyPressEvent(QKeyEvent *event) {
   auto key=event->key();
-   switch(key) {
+  switch(key) {
   case Qt::Key_Space:
   case Qt::Key_Down:
   case Qt::Key_Enter:
@@ -136,10 +169,37 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
   case Qt::Key_PageUp:
   case Qt::Key_Left:
   case Qt::Key_Right:
+  case Qt::Key_F:
     fullScreenWidget.showFullScreen();
+    break;
+  case Qt::Key_A:
+  case Qt::Key_C:
+    // case Qt::Key_Control:
+  {
+    qDebug() << "Opening Command select window";
+    auto csw=new CommandSelectionWidget(this);
+    csw->fill();
+    csw->show();
+  }
   break;
   default:
     QMainWindow::keyPressEvent(event);
     break;
+  }
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event) {
+  if(!event->text().isEmpty())
+    return;
+  auto key=event->key();
+  switch(key) {
+  case Qt::Key_Control:
+  {
+    qDebug() << "Opening Command select window - Ctrl+C";
+    auto csw=new CommandSelectionWidget(this);
+    csw->fill();
+    csw->show();
+  }
+  break;
   }
 }

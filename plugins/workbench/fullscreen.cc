@@ -2,6 +2,10 @@
 
 Whtbrd_Show* thisShow=NULL;
 
+/**
+ * This widget is to be shown full screen. It can't have a parent widget 
+ * in order to do that.
+ */
 FullScreen::FullScreen() {
   QPalette pal = palette();
   pal.setColor(QPalette::Background, Qt::white);

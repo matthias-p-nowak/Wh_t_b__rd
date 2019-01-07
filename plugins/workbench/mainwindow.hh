@@ -22,18 +22,22 @@ public:
   virtual ~MainWindow();
   void showMessage(QString msg); // for logging in statusbar
   void keyPressEvent(QKeyEvent *event) override;
+  void keyReleaseEvent(QKeyEvent *event) override;
  
 private:
   static MainWindow *instance;
   FullScreen fullScreenWidget;
   MainWindow(); // only getInstance can create main windows
-
+  QMenu *cmdMenu;
+  
 public slots:
   void closeEvent(QCloseEvent *event);
   void closeMain(bool checked=false);
   void doIdleWork();
   void dummy(bool checked=false); // dummy slot
   void fullScreen(bool _ignored);
+  void aboutToShowCmds();
+  void execCmd(bool _ignored);
 
 };
 #endif
